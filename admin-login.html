@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - MOEMEN'S COMPUTER</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <style>
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 20px;
+        }
+
+        .login-container {
+            background: #1e1e2e;
+            border-radius: 16px;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header i {
+            font-size: 3rem;
+            color: #00d4ff;
+            margin-bottom: 15px;
+        }
+
+        .login-header h1 {
+            color: #fff;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .login-header p {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #ccc;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            background: #2a2a3e;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #00d4ff;
+            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #666;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #00d4ff, #007bff);
+            border: none;
+            border-radius: 8px;
+            color: #0a0a0a;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .login-btn i {
+            margin-right: 8px;
+        }
+
+        .error-message {
+            background: rgba(255, 77, 77, 0.1);
+            border: 1px solid #ff4d4d;
+            border-radius: 8px;
+            padding: 12px;
+            color: #ff4d4d;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .back-to-store {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-to-store a {
+            color: #00d4ff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .back-to-store a:hover {
+            color: #fff;
+        }
+
+        .back-to-store a i {
+            margin-right: 5px;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #0a0a0a;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 0.8s linear infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .login-btn.loading .spinner {
+            display: inline-block;
+        }
+
+        .login-btn.loading .btn-text {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-page">
+        <div class="login-container">
+            <div class="login-header">
+                <i class="fas fa-user-shield"></i>
+                <h1>Admin Login</h1>
+                <p>Enter your credentials to access the admin panel</p>
+            </div>
+
+            <div id="errorMessage" class="error-message"></div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="admin@example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+
+                <button type="submit" class="login-btn" id="loginBtn">
+                    <span class="btn-text"><i class="fas fa-sign-in-alt"></i> Login</span>
+                </button>
+            </form>
+
+            <div class="back-to-store">
+                <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Store</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase Config -->
+    <script src="firebase-config.js"></script>
+    
+    <script>
+        // Check if user is already logged in
+        auth.onAuthStateChanged(function(user) {
+            if (user) {
+                // User is already logged in, redirect to admin
+                window.location.href = 'admin.html';
+            }
+        });
+
+        // Login form handler
+        const loginForm = document.getElementById('loginForm');
+        const loginBtn = document.getElementById('loginBtn');
+        const errorMessage = document.getElementById('errorMessage');
+
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+
+            // Show loading state
+            loginBtn.classList.add('loading');
+            loginBtn.disabled = true;
+            errorMessage.classList.remove('show');
+
+            // Sign in with Firebase
+            auth.signInWithEmailAndPassword(email, password)
+                .then(function(userCredential) {
+                    // Login successful, redirect to admin
+                    window.location.href = 'admin.html';
+                })
+                .catch(function(error) {
+                    // Handle errors
+                    loginBtn.classList.remove('loading');
+                    loginBtn.disabled = false;
+                    
+                    let errorText = 'Login failed. Please check your credentials.';
+                    
+                    if (error.code === 'auth/invalid-email') {
+                        errorText = 'Invalid email address format.';
+                    } else if (error.code === 'auth/user-disabled') {
+                        errorText = 'This account has been disabled.';
+                    } else if (error.code === 'auth/user-not-found') {
+                        errorText = 'No account found with this email.';
+                    } else if (error.code === 'auth/wrong-password') {
+                        errorText = 'Incorrect password.';
+                    } else if (error.code === 'auth/invalid-api-key') {
+                        errorText = 'Firebase API key is invalid. Please check firebase-config.js';
+                    } else if (error.code === 'auth/network-request-failed') {
+                        errorText = 'Network error. Please check your internet connection.';
+                    }
+                    
+                    errorMessage.textContent = errorText;
+                    errorMessage.classList.add('show');
+                });
+        });
+    </script>
+</body>
+</html>
+

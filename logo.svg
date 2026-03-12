@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80" width="200" height="80">
+  <defs>
+    <filter id="blueGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <linearGradient id="mGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#007bff;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <path d="M 10 70 L 10 20 L 40 50 L 70 20 L 70 70" stroke="url(#mGradient)" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#blueGlow)"/>
+  <circle cx="40" cy="45" r="6" fill="#00d4ff" filter="url(#blueGlow)">
+    <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <text x="85" y="50" font-family="Poppins, Arial, sans-serif" font-size="28" font-weight="600" fill="#ffffff">
+    <tspan fill="#00d4ff">M</tspan>OEMEN'S
+  </text>
+  <text x="85" y="68" font-family="Poppins, Arial, sans-serif" font-size="14" font-weight="400" fill="#888888">COMPUTER</text>
+</svg>
