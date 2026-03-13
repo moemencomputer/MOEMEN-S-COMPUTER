@@ -22,7 +22,7 @@ const currencySymbols = {
     USD: '$',
     EUR: '€',
     AUD: 'A$',
-    LBP: 'L£'
+    LBP: 'LBP'
 };
 
 // Current selected currency
@@ -32,7 +32,7 @@ let currentCurrency = 'USD';
 function formatPrice(usdPrice, currency) {
     if (currency === 'LBP') {
         const converted = usdPrice * exchangeRates.LBP;
-        return 'L£ ' + Math.round(converted).toLocaleString();
+        return 'LBP ' + Math.round(converted).toLocaleString();
     } else if (currency === 'EUR') {
         const converted = usdPrice * exchangeRates.EUR;
         return '€' + converted.toFixed(2);
@@ -1512,4 +1512,5 @@ document.addEventListener('DOMContentLoaded', function() {
       });
   });
 });
+
 
