@@ -204,7 +204,7 @@ document.addEventListener('DOMContentLoaded', function() {
             email: "Email",
             emailAddress: "info@moemencomputer.com",
             workingHours: "Working Hours",
-            workingHoursText: "’Mon - Fri: 9AM - 8PM  Sat: 9AM - 7PM  sun:Close",
+            workingHoursText: "Mon - Fri: 9AM - 8PM  Sat: 9AM - 7PM  sun:Close",
             footerDesc: "Your trusted destination for premium computers, laptops, and tech accessories. Quality products, expert service.",
             quickLinks: "Quick Links",
             footerServices: "Services",
@@ -1512,5 +1512,6 @@ document.addEventListener('DOMContentLoaded', function() {
       });
   });
 });
+
 
 
