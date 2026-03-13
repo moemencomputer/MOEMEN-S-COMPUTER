@@ -181,8 +181,13 @@ function updateProductCategoryDropdown() {
 }
 
 function addNewCategory() {
-    const categoryInput = document.getElementById('newCategoryName');
-    const categoryName = categoryInput.value.trim();
+   const categoryEN = document.getElementById("category_en").value;
+const categoryAR = document.getElementById("category_ar").value;
+
+addDoc(collection(db, "categories"), {
+  name_en: categoryEN,
+  name_ar: categoryAR
+});
     
     if (!categoryName) {
         showToast('Please enter a category name', 'error');
@@ -686,4 +691,5 @@ function closeDeleteModal() {
 // Export functions for global use (table onclick handlers)
 window.editProduct = editProduct;
 window.deleteProduct = deleteProduct;
+
 
