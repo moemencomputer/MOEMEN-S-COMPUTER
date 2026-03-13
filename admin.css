@@ -103,6 +103,11 @@ body {
     margin-top: var(--admin-header-height);
     min-height: calc(100vh - var(--admin-header-height));
 }
+@media (max-width:768px){
+    .admin-main{
+        flex-direction: column;
+    }
+}
 
 /* Sidebar */
 .admin-sidebar {
@@ -748,7 +753,7 @@ body {
         width: 100%;
         justify-content: center;
     }
-}
+
 
 /* Mobile Menu Toggle */
 .mobile-menu-toggle {
@@ -759,6 +764,7 @@ body {
     font-size: 1.5rem;
     cursor: pointer;
     padding: 10px;
+}
 }
 
 @media (max-width: 768px) {
@@ -881,5 +887,6 @@ body {
     font-size: 1.8rem;
   }
 }
+
 
 
